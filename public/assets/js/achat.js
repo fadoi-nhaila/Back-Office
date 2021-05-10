@@ -46,7 +46,7 @@ function initAchat()
     });
    
 }
-
+// comments
 function calculateTotalPurchase(elem)
 {
     console.log(elem)
