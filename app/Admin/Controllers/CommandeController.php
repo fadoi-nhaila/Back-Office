@@ -31,11 +31,12 @@ class CommandeController extends AdminController
         $grid = new Grid(new Commande());
 
         $grid->model()->orderBy('id', 'DESC');
+        //$grid->model()->orderBy('client.nom', 'desc');
         $grid->column('id', __('ID'))->sortable()->filter();
         $grid->column('reference', __('Référence'))->sortable()->filter();
         $grid->column('etat', __('Etat'))->sortable()->filter();
         $grid->column('date', __('Date'))->sortable()->filter();
-        $grid->column('id_client', __('Id_client'))->sortable()->filter();;
+        $grid->column('client.nom', __('Client'))->sortable()->filter();
         $grid->column('created_at', __('Created at'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter();
@@ -77,7 +78,7 @@ class CommandeController extends AdminController
         $form = new Form(new Commande());
 
         
-        $form->select('id_client', __('Nom Client'))->options(Client::all()->pluck('nom','id'));
+        $form->select('id_client', __('Nom Client'))->options(Client::all()->pluck('nom','id'))->required();
         $form->text('reference', __('Référence'))->placeholder('Entrez la référence')->required();
         $form->text('etat', __('Etat'))->placeholder('Entrez l\'état')->required();
         $form->date('date', __('Date'))->placeholder('Entrez la date')->required();

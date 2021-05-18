@@ -60,7 +60,7 @@ function calculateTotalPurchase(elem)
         
         let prix =  elem.closest(".has-many-listeAchats-form").find(".prix_unite").val();
         let total = quantite * prix;
-        elem.closest(".has-many-listeAchats-form").find(".prix_total").val(total.toFixed(2));
+        elem.closest(".has-many-listeAchats-form").find(".prix_total").val(total);
     }
 
     sommeTotalPurchase();

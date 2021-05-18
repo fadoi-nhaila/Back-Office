@@ -20,4 +20,4 @@
 Encore\Admin\Form::forget(['map', 'editor']);
 
 Admin::css('/assets/css/achat.css');
-Admin::js('/assets/js/achat.js');
+Admin::js('/assets/js/achats.js');

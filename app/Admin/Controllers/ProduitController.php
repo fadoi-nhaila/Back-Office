@@ -32,8 +32,8 @@ class ProduitController extends AdminController
         $grid->model()->orderBy('id', 'DESC');
 
         $grid->column('id', 'ID')->sortable()->filter();
-        $grid->categorie()->libelle('Catégorie')->sortable()->filter();
-        $grid->marque()->libelle('Marque')->sortable()->filter();
+        $grid->column('categorie.libelle', __('Catégorie'))->sortable()->filter();
+        $grid->column('marque.libelle', __('Marque'))->sortable()->filter();
         $grid->column('nom', __('Nom'))->sortable()->filter();
         $grid->column('description', __('Description'))->hide();
         $grid->column('prix', __('Prix'))->sortable()->filter()->display(function($prix){
