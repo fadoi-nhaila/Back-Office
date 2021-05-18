@@ -31,7 +31,6 @@ class CommandeController extends AdminController
         $grid = new Grid(new Commande());
 
         $grid->model()->orderBy('id', 'DESC');
-        //$grid->model()->orderBy('client.nom', 'desc');
         $grid->column('id', __('ID'))->sortable()->filter();
         $grid->column('reference', __('Référence'))->sortable()->filter();
         $grid->column('etat', __('Etat'))->sortable()->filter();
