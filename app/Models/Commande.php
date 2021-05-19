@@ -9,9 +9,12 @@ class Commande extends Model
 {
     use HasFactory;
 
+    protected $table = 'commandes';
+
+    
     public function client()
     {
-        return $this->belongsTo(Client::class,'id_client');   
+        return $this->belongsTo(Client::class,'client_id');   
     }
 
     public function listeAchats()

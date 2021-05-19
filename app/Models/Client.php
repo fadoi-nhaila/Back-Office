@@ -9,6 +9,9 @@ class Client extends Model
 {
     use HasFactory;
 
+    protected $table = 'clients';
+    
+
     public function adresses()
     {
         return $this->hasMany(Adresse::class,'client_id');
@@ -16,7 +19,7 @@ class Client extends Model
 
     public function commandes()
     {
-        return $this->hasMany(Commande::class,'id_client');
+        return $this->hasMany(Commande::class,'client_id');
     }
 }
 
