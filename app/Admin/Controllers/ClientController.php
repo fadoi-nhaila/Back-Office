@@ -29,20 +29,20 @@ class ClientController extends AdminController
     {
         $grid = new Grid(new Client());
         $grid->model()->orderBy('id', 'DESC');
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('nom', __('Nom'))->sortable()->filter();
-        $grid->column('prenom', __('Prénom'))->sortable()->filter();
-        $grid->column('sexe', __('Sexe'))->sortable()->filter();
-        $grid->column('telephone', __('Téléphone'))->sortable()->filter();
-        $grid->column('email', __('Email'))->sortable()->filter();
-        $grid->column('code_barre', __('Code barre'))->sortable()->filter();
-        $grid->column('solde_fidelite', __('Solde fidélité'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
+        $grid->column('prenom', __('Prénom'))->sortable()->filter('like');
+        $grid->column('sexe', __('Sexe'))->sortable()->filter('like');
+        $grid->column('telephone', __('Téléphone'))->sortable()->filter('like');
+        $grid->column('email', __('Email'))->sortable()->filter('like');
+        $grid->column('code_barre', __('Code barre'))->sortable()->filter('like');
+        $grid->column('solde_fidelite', __('Solde fidélité'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
 
         return $grid;
     }

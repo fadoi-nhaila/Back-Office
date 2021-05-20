@@ -27,15 +27,15 @@ class BesoinAideController extends AdminController
         $grid = new Grid(new BesoinAide());
 
         $grid->model()->orderBy('id', 'DESC');
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('question', __('Question'))->sortable()->filter();
-        $grid->column('reponse', __('Réponse'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('question', __('Question'))->sortable()->filter('like');
+        $grid->column('reponse', __('Réponse'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
 
         return $grid;
     }

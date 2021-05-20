@@ -32,19 +32,19 @@ class PromotionController extends AdminController
         $grid = new Grid(new Promotion());
 
         $grid->model()->orderBy('id', 'DESC');
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('nom', __('Nom'))->sortable()->filter();
-        $grid->column('date_debut', __('Date début'))->sortable()->filter();
-        $grid->column('date_fin', __('Date fin'))->sortable()->filter();
-        $grid->column('type', __('Type'))->sortable()->filter();
-        $grid->column('valeur', __('Valeur'))->sortable()->filter();
-        $grid->column('etat', __('Etat'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
+        $grid->column('date_debut', __('Date début'))->sortable()->filter('like');
+        $grid->column('date_fin', __('Date fin'))->sortable()->filter('like');
+        $grid->column('type', __('Type'))->sortable()->filter('like');
+        $grid->column('valeur', __('Valeur'))->sortable()->filter('like');
+        $grid->column('etat', __('Etat'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         return $grid;
     }
     

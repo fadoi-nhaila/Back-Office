@@ -27,19 +27,19 @@ class MagasinController extends AdminController
         $grid = new Grid(new Magasin());
 
         $grid->model()->orderBy('id', 'DESC');
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('nom', __('Nom'))->sortable()->filter();
-        $grid->column('ville', __('Ville'))->sortable()->filter();
-        $grid->column('telephone', __('Téléphone'))->sortable()->filter();
-        $grid->column('description', __('Description'))->hide()->filter();
-        $grid->column('latitude_gps', __('Latitude'))->sortable()->filter();
-        $grid->column('longitude_gps', __('Longitude'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
+        $grid->column('ville', __('Ville'))->sortable()->filter('like');
+        $grid->column('telephone', __('Téléphone'))->sortable()->filter('like');
+        $grid->column('description', __('Description'))->hide()->filter('like');
+        $grid->column('latitude_gps', __('Latitude'))->sortable()->filter('like');
+        $grid->column('longitude_gps', __('Longitude'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         return $grid;
     }
 

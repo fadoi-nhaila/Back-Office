@@ -28,16 +28,16 @@ class SliderController extends AdminController
         $grid = new Grid(new Slider());
 
         $grid->model()->orderBy('id', 'DESC');
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('nom', __('Nom'))->sortable()->filter();
-        $grid->column('url', __('Url'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
+        $grid->column('url', __('Url'))->sortable()->filter('like');
         $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter();
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
 
         return $grid;
     }

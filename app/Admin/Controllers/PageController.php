@@ -27,16 +27,16 @@ class PageController extends AdminController
         $grid = new Grid(new Page());
 
         $grid->model()->orderBy('id', 'DESC');
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('nom', __('Nom'))->sortable()->filter();
-        $grid->column('url', __('Url'))->sortable()->filter();
-        $grid->column('contenu', __('Contenu'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
+        $grid->column('url', __('Url'))->sortable()->filter('like');
+        $grid->column('contenu', __('Contenu'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
 
         return $grid;
        

@@ -31,23 +31,23 @@ class ProduitController extends AdminController
        
         $grid->model()->orderBy('id', 'DESC');
 
-        $grid->column('id', 'ID')->sortable()->filter();
-        $grid->column('categorie.libelle', __('Catégorie'))->sortable()->filter();
-        $grid->column('marque.libelle', __('Marque'))->sortable()->filter();
-        $grid->column('nom', __('Nom'))->sortable()->filter();
+        $grid->column('id', 'ID')->sortable()->filter('like');
+        $grid->column('categorie.libelle', __('Catégorie'))->sortable()->filter('like');
+        $grid->column('marque.libelle', __('Marque'))->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
         $grid->column('description', __('Description'))->hide();
-        $grid->column('prix', __('Prix'))->sortable()->filter()->display(function($prix){
+        $grid->column('prix', __('Prix'))->sortable()->filter('like')->display(function($prix){
             return number_format($prix, 2, ',', '');
         });
-        $grid->column('point_fidelite', __('Point fidélité'))->sortable()->filter();
-        $grid->column('quantite', __('Quantité'))->sortable()->filter();
-        $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter();
+        $grid->column('point_fidelite', __('Point fidélité'))->sortable()->filter('like');
+        $grid->column('quantite', __('Quantité'))->sortable()->filter('like');
+        $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
 
         return $grid;
     }

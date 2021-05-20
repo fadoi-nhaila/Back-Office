@@ -33,16 +33,16 @@ class CommandeController extends AdminController
         $grid->model()->orderBy('id', 'DESC');
         
         $grid->column('id', __('ID'))->sortable()->filter();
-        $grid->column('reference', __('Référence'))->sortable()->filter();
-        $grid->column('etat', __('Etat'))->sortable()->filter();
-        $grid->column('date', __('Date'))->sortable()->filter();
-        $grid->column('client.nom', __('Client'))->sortable()->filter();
+        $grid->column('reference', __('Référence'))->sortable()->filter('like');
+        $grid->column('etat', __('Etat'))->sortable()->filter('like');
+        $grid->column('date', __('Date'))->sortable()->filter('like');
+        $grid->column('client.nom', __('Client'))->sortable()->filter('like');
         $grid->column('created_at', __('Created at'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
         $grid->column('updated_at', __('Updated at'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter();
+        })->sortable()->filter('like');
 
         return $grid;
     }
