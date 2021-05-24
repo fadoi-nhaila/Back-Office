@@ -27,7 +27,8 @@ class CommandeController extends AdminController
      * @return Grid
      */
     protected function grid()
-    {
+    {   
+        
         $grid = new Grid(new Commande());
 
         $grid->model()->orderBy('id', 'DESC');
@@ -78,22 +79,22 @@ class CommandeController extends AdminController
         $form = new Form(new Commande());
 
         
-        $form->select('id_client', __('Nom Client'))->options(Client::all()->pluck('nom','id'))->required();
+        $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required();
         $form->text('reference', __('Référence'))->placeholder('Entrez la référence')->required();
         $form->text('etat', __('Etat'))->placeholder('Entrez l\'état')->required();
-        $form->date('date', __('Date'))->placeholder('Entrez la date')->required();
+        $form->date('date', __('Date'))->placeholder('Entrez la date')->required()->format('DD/MM/YYYY');
        
         $form->divider();
         
 
         $form->table('listeAchats','Liste d\'achats', function (Form\NestedForm $form) {
             
-        $form->select('categorie_id','Catégorie')->options(Categorie::all()->pluck('libelle','id'))->load('produit_id', '/admin/api/produit');
-        $form->select('produit_id','Produit');
-        $form->decimal('prix_unite', __('Prix unité'))->placeholder('Prix unité')->required()->prepend(false);
-        $form->decimal('quantite', __('Quantité'))->placeholder('Quantité')->prepend(false);
-        $form->decimal('prix_total', __('Prix total'))->placeholder('Prix total')->required()->prepend(false);
-              
+            $form->select('categorie_id','Catégorie')->options(Categorie::all()->pluck('libelle','id'))->load('produit_id', '/admin/api/produit');
+            $form->select('produit_id','Produit');
+            $form->decimal('prix_unite', __('Prix unité'))->placeholder('Prix unité')->required()->prepend(false);
+            $form->decimal('quantite', __('Quantité'))->placeholder('Quantité')->prepend(false);
+            $form->decimal('prix_total', __('Prix total'))->placeholder('Prix total')->required()->prepend(false);
+                
         });
 
         Admin::script('initAchat()');

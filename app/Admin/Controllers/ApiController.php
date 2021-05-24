@@ -8,7 +8,7 @@ use App\Models\Produit;
 
 class ApiController extends Controller
 {
-    //
+    
     public function produitParCategorieId(Request $request)
     {
         $categorie_id = $request->get('q');
@@ -21,6 +21,7 @@ class ApiController extends Controller
 
         return $data;
     }
+
 
     public function produitDetail(Request $request)
     {

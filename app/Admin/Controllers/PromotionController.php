@@ -80,7 +80,7 @@ class PromotionController extends AdminController
     protected function form()
     {
         $form = new Form(new Promotion());
-        $form->text('nom', __('Nom'))->placeholder('Entrez le nom')->rules('required');
+        $form->text('nom', __('Nom'))->placeholder('Entrez le nom')->required();
        
         $types = [
             1 =>'pourcentage' ,
@@ -90,12 +90,12 @@ class PromotionController extends AdminController
         $form->select('type', __('Type'))->options($types)->required();
         $form->text('etat', __('Etat'))->required();
         $form->text('valeur', __('Valeur'))->placeholder('Entrez la valeur')->required(); 
-        $form->date('date_debut', __('Date début'))->placeholder('Date début')->required();
-        $form->date('date_fin', __('Date fin'))->placeholder('Date fin')->required();
+        $form->date('date_debut', __('Date début'))->placeholder('Date début')->required()->format('DD/MM/YYYY');
+        $form->date('date_fin', __('Date fin'))->placeholder('Date fin')->required()->format('DD/MM/YYYY');
 
         $form->divider();
 
-        $form->table('associations', function (Form\NestedForm $form) {
+        $form->table('produits','Associations', function (Form\NestedForm $form) {
             
             $form->select('categorie_id','Catégorie')
                 ->options(Categorie::all()->pluck('libelle','id'))

@@ -19,5 +19,10 @@ class Produit extends Model
         return $this->belongsTo(Marque::class,'marque_id');
 
     }
+
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class);
+    }
    
 }
