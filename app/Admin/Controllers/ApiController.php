@@ -20,13 +20,14 @@ class ApiController extends Controller
         }
 
         return $data;
+
     }
 
 
     public function produitDetail(Request $request)
     {
         $produit_id= $request->get('id');
-        $produit = Produit::where('id', $produit_id)->get(['nom', 'prix'])->first();
+        $produit = Produit::where('id', $produit_id)->get(['nom','prix'])->first();
         return $produit;
     }
 }

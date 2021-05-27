@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProduitPromotionTable extends Migration
+class CreatePaiementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateProduitPromotionTable extends Migration
      */
     public function up()
     {
-        Schema::create('produit_promotion', function (Blueprint $table) {
+        Schema::create('paiements', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('promotion_id')->unsigned();
-            $table->bigInteger('produit_id')->unsigned()->nullable();
-            $table->bigInteger('categorie_id');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateProduitPromotionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produit_promotion');
+        Schema::dropIfExists('paiements');
     }
 }

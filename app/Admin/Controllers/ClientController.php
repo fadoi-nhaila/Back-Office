@@ -86,7 +86,7 @@ class ClientController extends AdminController
         $form->mobile('telephone', __('Téléphone'))->options(['mask' => '9999999999'])->placeholder('Entrez téléphone')->required();
         $form->email('email', __('Email'))->placeholder('Entrez email')->required();
         $form->text('code_barre', __('Code barre'))->placeholder('Entrez code barre')->required();
-        $form->decimal('solde_fidelite', __('Solde fidélité'))->default('0');
+        $form->decimal('solde_fidelite', __('Solde fidélité'))->default('0')->prepend(false);
         
         $form->divider();
 
@@ -96,6 +96,12 @@ class ClientController extends AdminController
             $form->text('rue', __('Rue'))->placeholder('Rue')->required()->prepend(false);
             $form->decimal('numero', __('Numéro'))->placeholder('Numéro')->required()->prepend(false);
         });
+
+        $form->saving(function (Form $form) {
+            foreach($form->model()->adresses as $adresse)
+                $adresse->delete();
+        });
+          
 
         return $form;
     }

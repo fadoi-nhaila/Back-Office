@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePrametresTable extends Migration
+class CreateListeCoursesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreatePrametresTable extends Migration
      */
     public function up()
     {
-        Schema::create('prametres', function (Blueprint $table) {
+        Schema::create('liste_courses', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->integer('id_client');
+            $table->string('libelle');
+            $table->text('contenu');
+            $table->integer('client_id');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreatePrametresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prametres');
+        Schema::dropIfExists('liste_courses');
     }
 }

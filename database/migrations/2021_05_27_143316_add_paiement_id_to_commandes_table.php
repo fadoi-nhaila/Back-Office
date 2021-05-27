@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateModePaiementsTable extends Migration
+class AddPaiementIdToCommandesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateModePaiementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mode_paiements', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');
-            $table->timestamps();
+        Schema::table('commandes', function (Blueprint $table) {
+         
+            $table->integer('paiement_id')->after('client_id');
+
         });
     }
 
@@ -27,6 +27,10 @@ class CreateModePaiementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mode_paiements');
+        Schema::table('commandes', function (Blueprint $table) {
+            //
+            $table->dropColumn('paiement_id');
+
+        });
     }
 }

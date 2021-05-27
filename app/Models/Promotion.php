@@ -10,9 +10,9 @@ class Promotion extends Model
 {
     use HasFactory;
     
-    public function produits()
+    public function promotion_associations()
     {
-        return $this->belongsToMany(Produit::class);
+        return $this->hasMany(PromotionAssociation::class, 'promotions_id');
     }
 
     public function getDateDebutAttribute($value)

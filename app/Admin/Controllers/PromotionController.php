@@ -13,6 +13,7 @@ use Encore\Admin\Show;
 use Illuminate\Support\Facades\DB;
 
 
+
 class PromotionController extends AdminController
 {
     /**
@@ -95,18 +96,22 @@ class PromotionController extends AdminController
 
         $form->divider();
 
-        $form->table('produits','Associations', function (Form\NestedForm $form) {
+        $form->table('promotion_associations','Associations', function (Form\NestedForm $form) {
             
-            $form->select('categorie_id','Catégorie')
+            $form->select('categories_id','Catégorie')
                 ->options(Categorie::all()->pluck('libelle','id'))
-                ->load('produit_id', '/admin/api/produit');
-            $form->select('produit_id','Produit');
-              
+                ->load('produits_id', '/admin/api/produit');
+            $form->select('produits_id','Produit')->options(function ($id) {
+                return Produit::where('id', $id)->pluck('nom', 'id');
+            });
+             
         });
-          
-         
-        
 
+        $form->saving(function (Form $form) {
+            foreach($form->model()->promotion_associations as $association)
+                $association->delete();
+        });
+  
         return $form;
     }
 }

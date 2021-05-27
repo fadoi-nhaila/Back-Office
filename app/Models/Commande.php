@@ -18,9 +18,9 @@ class Commande extends Model
         return $this->belongsTo(Client::class,'client_id');   
     }
 
-    public function listeAchats()
+    public function ligne_commandes()
     {
-        return $this->belongsToMany(Produit::class)->withPivot(['categorie_id','prix_unite','quantite','prix_total']);
+        return $this->hasMany(LigneCommande::class, 'commandes_id');
     }
 
     public function getDateAttribute($value)

@@ -87,17 +87,26 @@ class CommandeController extends AdminController
         $form->divider();
         
 
-        $form->table('listeAchats','Liste d\'achats', function (Form\NestedForm $form) {
+        $form->table('ligne_commandes','Liste d\'achats', function (Form\NestedForm $form) {
             
-            $form->select('categorie_id','Catégorie')->options(Categorie::all()->pluck('libelle','id'))->load('produit_id', '/admin/api/produit');
-            $form->select('produit_id','Produit');
+            $form->select('categories_id','Catégorie')
+                 ->options(Categorie::all()->pluck('libelle','id'))
+                 ->load('produits_id', '/admin/api/produit');
+            $form->select('produits_id','Produit')->options(function ($id) {
+                return Produit::where('id', $id)->pluck('nom', 'id');
+            });
             $form->decimal('prix_unite', __('Prix unité'))->placeholder('Prix unité')->required()->prepend(false);
             $form->decimal('quantite', __('Quantité'))->placeholder('Quantité')->prepend(false);
             $form->decimal('prix_total', __('Prix total'))->placeholder('Prix total')->required()->prepend(false);
                 
         });
 
-        Admin::script('initAchat()');
+        $form->saving(function (Form $form) {
+            foreach($form->model()->ligne_commandes as $achat)
+                $achat->delete();
+        });
+
+        Admin::script('initCommande()');
           
         return $form;
 
