@@ -35,17 +35,24 @@ class PromotionController extends AdminController
         $grid->model()->orderBy('id', 'DESC');
         $grid->column('id', 'ID')->sortable()->filter('like');
         $grid->column('nom', __('Nom'))->sortable()->filter('like');
-        $grid->column('date_debut', __('Date début'))->sortable()->filter('like');
-        $grid->column('date_fin', __('Date fin'))->sortable()->filter('like');
+        $grid->column('date_debut', __('Date début'))->sortable()->filter('range','date');
+        $grid->column('date_fin', __('Date fin'))->sortable()->filter('range','date');
         $grid->column('type', __('Type'))->sortable()->filter('like');
         $grid->column('valeur', __('Valeur'))->sortable()->filter('like');
         $grid->column('etat', __('Etat'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
+
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
+        
         return $grid;
     }
     
@@ -84,8 +91,8 @@ class PromotionController extends AdminController
         $form->text('nom', __('Nom'))->placeholder('Entrez le nom')->required();
        
         $types = [
-            1 =>'pourcentage' ,
-            2 =>'solde' ,
+            'pourcentage' =>'pourcentage' ,
+            'solde' =>'solde' ,
         ];
         
         $form->select('type', __('Type'))->options($types)->required();
@@ -96,7 +103,7 @@ class PromotionController extends AdminController
 
         $form->divider();
 
-        $form->table('promotion_associations','Associations', function (Form\NestedForm $form) {
+        $form->table('promotion_associations','', function (Form\NestedForm $form) {
             
             $form->select('categories_id','Catégorie')
                 ->options(Categorie::all()->pluck('libelle','id'))

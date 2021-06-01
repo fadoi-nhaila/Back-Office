@@ -21,5 +21,15 @@ class Client extends Model
     {
         return $this->hasMany(Commande::class,'client_id');
     }
+
+    public function parametres()
+    {
+        return $this->hasMany(Parametre::class,'client_id');
+    }
+
+    public function liste_courses()
+    {
+        return $this->hasMany(ListeCourse::class,'client_id');
+    }
 }
 

@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\ListeCourse;
+use App\Models\Client;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -15,7 +16,7 @@ class ListeCourseController extends AdminController
      *
      * @var string
      */
-    protected $title = 'ListeCourse';
+    protected $title = 'Listes de Courses';
 
     /**
      * Make a grid builder.
@@ -26,12 +27,20 @@ class ListeCourseController extends AdminController
     {
         $grid = new Grid(new ListeCourse());
 
-        $grid->column('id', __('Id'));
-        $grid->column('libelle', __('Libelle'));
-        $grid->column('contenu', __('Contenu'));
-        $grid->column('client_id', __('Client id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->model()->orderBy('id', 'DESC');
+
+        $grid->column('id', __('Id'))->sortable()->filter();
+        $grid->column('libelle', __('Libelle'))->sortable()->filter('like');
+        $grid->column('contenu', __('Contenu'))->sortable()->filter('like');
+        $grid->column('client.nom', __('Client'))->sortable()->filter('like');
+        $grid->column('created_at', __('Created at'))->display(function(){
+            return $this->created_at->format('d/m/Y');
+        })->sortable()->filter('like');
+        $grid->column('updated_at', __('Updated at'))->display(function(){
+            return $this->updated_at->format('d/m/Y');
+        })->sortable()->filter('like');
+
+        
 
         return $grid;
     }
@@ -65,9 +74,9 @@ class ListeCourseController extends AdminController
     {
         $form = new Form(new ListeCourse());
 
-        $form->text('libelle', __('Libelle'));
-        $form->textarea('contenu', __('Contenu'));
-        $form->number('client_id', __('Client id'));
+        $form->text('libelle', __('Libelle'))->required();
+        $form->textarea('contenu', __('Contenu'))->required();
+        $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required();
 
         return $form;
     }

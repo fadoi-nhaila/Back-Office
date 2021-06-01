@@ -290,7 +290,7 @@ return [
     | "sidebar-mini".
     |
     */
-    'layout' => ['sidebar-mini', 'sidebar-collapse'],
+    'layout' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -396,6 +396,12 @@ return [
     |
     */
     'extensions' => [
+        
+        'grid-lightbox' => [
+        
+            // Set to `false` if you want to disable this extension
+            'enable' => true,
+        ]
 
     ],
 ];

@@ -19,6 +19,7 @@
  */
 Encore\Admin\Form::forget(['map', 'editor']);
 
+Admin::js('/assets/js/global.js');
 Admin::css('/assets/css/achats.css');
 Admin::js('/assets/js/achat.js');
 

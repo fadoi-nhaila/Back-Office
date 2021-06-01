@@ -6,6 +6,7 @@ use App\Models\Commande;
 use App\Models\Produit;
 use App\Models\Client;
 use App\Models\Categorie;
+use App\Models\ModePaiement;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -38,12 +39,19 @@ class CommandeController extends AdminController
         $grid->column('etat', __('Etat'))->sortable()->filter('like');
         $grid->column('date', __('Date'))->sortable()->filter('like');
         $grid->column('client.nom', __('Client'))->sortable()->filter('like');
+        $grid->column('mode_paiement.type', __('Mode Paiement'))->sortable()->filter('like');
         $grid->column('created_at', __('Created at'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Updated at'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
+
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
 
         return $grid;
     }
@@ -78,16 +86,16 @@ class CommandeController extends AdminController
     {
         $form = new Form(new Commande());
 
-        
-        $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required();
-        $form->text('reference', __('Référence'))->placeholder('Entrez la référence')->required();
-        $form->text('etat', __('Etat'))->placeholder('Entrez l\'état')->required();
         $form->date('date', __('Date'))->placeholder('Entrez la date')->required()->format('DD/MM/YYYY');
+        $form->text('reference', __('Référence'))->placeholder('Entrez la référence')->required();
+        $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required();
+        $form->select('paiement_id', __('Mode Paiement'))->options(ModePaiement::all()->pluck('type','id'))->required();
+        $form->text('etat', __('Etat'))->placeholder('Entrez l\'état')->required();
        
         $form->divider();
         
 
-        $form->table('ligne_commandes','Liste d\'achats', function (Form\NestedForm $form) {
+        $form->table('ligne_commandes','', function (Form\NestedForm $form) {
             
             $form->select('categories_id','Catégorie')
                  ->options(Categorie::all()->pluck('libelle','id'))
@@ -106,7 +114,7 @@ class CommandeController extends AdminController
                 $achat->delete();
         });
 
-        Admin::script('initCommande()');
+        Admin::script('$(function(){initCommande()})');
           
         return $form;
 

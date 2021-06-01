@@ -18,6 +18,12 @@ class Commande extends Model
         return $this->belongsTo(Client::class,'client_id');   
     }
 
+    public function mode_paiement()
+    {
+        return $this->belongsTo(ModePaiement::class,'paiement_id');   
+    }
+
+
     public function ligne_commandes()
     {
         return $this->hasMany(LigneCommande::class, 'commandes_id');

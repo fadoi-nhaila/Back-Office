@@ -9,6 +9,9 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Admin;
+
+use Route;
 
 class ProduitController extends AdminController
 {
@@ -41,13 +44,33 @@ class ProduitController extends AdminController
         });
         $grid->column('point_fidelite', __('Point fidélité'))->sortable()->filter('like');
         $grid->column('quantite', __('Quantité'))->sortable()->filter('like');
-        $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter('like');
+        $grid->column('image', __('Image'))->lightbox(['width' => 50, 'height' => 50,'zooming' => true]);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('like');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
         })->sortable()->filter('like');
+
+
+        $tables = ["categorie", "marque"];
+        foreach($tables as $table)
+        {
+            if(request($table."_libelle"))
+            {
+                $grid->model()->whereHas($table, function ($query) use ($table)  {
+                    $query->where('libelle', 'like', "%".request($table."_libelle")."%");
+                });
+                $url = Route::current()->uri;
+                Admin::script('setSearch("'.$table.'-libelle", "'.request($table."_libelle").'", "/'.$url.'");');
+            }
+        }
+
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
 
         return $grid;
     }

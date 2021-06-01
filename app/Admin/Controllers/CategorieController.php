@@ -30,16 +30,24 @@ class CategorieController extends AdminController
         $grid = new Grid(new Categorie());
 
         $grid->model()->orderBy('id', 'DESC');
+        
         $grid->column('id', __('ID'))->sortable()->filter('like');
         $grid->column('libelle', __('Libellé'))->sortable()->filter('like');
-        $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter('like');
+        $grid->column('image', __('Image'))->lightbox(['width' => 50, 'height' => 50,'zooming' => true]);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
 
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
+
+ 
         return $grid;
     }
 

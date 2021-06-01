@@ -7,6 +7,9 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Admin;
+
+use Route;
 
 class AdresseController extends AdminController
 {
@@ -27,16 +30,16 @@ class AdresseController extends AdminController
         $grid = new Grid(new Adresse());
 
         $grid->id('ID')->sortable();
-        $grid->ville()->nom('Ville')->sortable()->filter();
-        $grid->column('quartier', __('Quartier'))->sortable()->filter();
-        $grid->column('rue', __('Rue'))->sortable()->filter();
-        $grid->column('numero', __('Numéro'))->sortable()->filter();
+        $grid->column('ville.nom', __('Ville'))->sortable()->filter('like');
+        $grid->column('quartier', __('Quartier'))->sortable()->filter('like');
+        $grid->column('rue', __('Rue'))->sortable()->filter('like');
+        $grid->column('numero', __('Numéro'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        });
+        })->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        });
+        })->filter('range','date');
 
         $grid->actions(function ($actions) {
            
@@ -45,6 +48,19 @@ class AdresseController extends AdminController
         });
 
         $grid->disableCreateButton();
+
+        $tables = ["ville"];
+        foreach($tables as $table)
+        {
+            if(request($table."_nom"))
+            {
+                $grid->model()->whereHas($table, function ($query) use ($table)  {
+                    $query->where('nom', 'like', "%".request($table."_nom")."%");
+                });
+                $url = Route::current()->uri;
+                Admin::script('setSearch("'.$table.'-nom", "'.request($table."_nom").'", "/'.$url.'");');
+            }
+        }
 
         return $grid;
     }

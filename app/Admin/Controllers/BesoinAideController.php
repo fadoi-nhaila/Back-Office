@@ -32,10 +32,16 @@ class BesoinAideController extends AdminController
         $grid->column('reponse', __('Réponse'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
+
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
 
         return $grid;
     }

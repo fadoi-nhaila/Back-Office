@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaiementsTable extends Migration
+class ChangeTypeTypeInPromotionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreatePaiementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('paiements', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');
-            $table->timestamps();
+        Schema::table('promotions', function (Blueprint $table) {
+            //
+            $table->string('type')->change();
         });
     }
 
@@ -27,6 +26,10 @@ class CreatePaiementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paiements');
+        Schema::table('promotions', function (Blueprint $table) {
+            //
+            $table->integer('type')->change();
+
+        });
     }
 }

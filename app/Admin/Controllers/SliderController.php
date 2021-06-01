@@ -34,10 +34,16 @@ class SliderController extends AdminController
         $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter();
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
+
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
 
         return $grid;
     }

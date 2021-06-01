@@ -28,6 +28,9 @@ class ApiController extends Controller
     {
         $produit_id= $request->get('id');
         $produit = Produit::where('id', $produit_id)->get(['nom','prix'])->first();
+
+        //calcule de promotion
+
         return $produit;
     }
 }

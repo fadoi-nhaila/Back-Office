@@ -28,9 +28,18 @@ class ClientController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Client());
+        
         $grid->model()->orderBy('id', 'DESC');
+
         $grid->column('id', 'ID')->sortable()->filter('like');
-        $grid->column('nom', __('Nom'))->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like')->expand(function ($model) {
+
+            $adresses = $model->adresses()->take(5)->get()->map(function ($adresse) {
+                return $adresse->only(['id','ville', 'quartier','rue','numero']);
+            });
+        
+            return new Table(['ID', 'Ville', 'Quartier','Rue','Numéro'], $adresses->toArray());
+        });;
         $grid->column('prenom', __('Prénom'))->sortable()->filter('like');
         $grid->column('sexe', __('Sexe'))->sortable()->filter('like');
         $grid->column('telephone', __('Téléphone'))->sortable()->filter('like');
@@ -39,10 +48,16 @@ class ClientController extends AdminController
         $grid->column('solde_fidelite', __('Solde fidélité'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date')->hide();
+
+        $grid->actions(function ($actions) {
+           
+            $actions->disableView();
+            
+        });
 
         return $grid;
     }

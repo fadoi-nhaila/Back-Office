@@ -27,7 +27,7 @@ Route::group([
     $router->resource('promotion-associations', PromoAssociationController::class);
     $router->resource('parametres', ParametreController::class);
     $router->resource('liste-courses', ListeCourseController::class);
-    $router->resource('paiements', PaiementController::class);
+    $router->resource('mode-paiements', ModePaiementController::class);
 
 Route::group([
         'prefix' => 'api'
