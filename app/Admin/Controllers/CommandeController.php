@@ -7,11 +7,16 @@ use App\Models\Produit;
 use App\Models\Client;
 use App\Models\Categorie;
 use App\Models\ModePaiement;
+use App\Models\Etat;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 Use Encore\Admin\Admin;
+use App\Admin\Actions\BatchRestore;
+
+
+use Route;
 
 class CommandeController extends AdminController
 {
@@ -34,22 +39,62 @@ class CommandeController extends AdminController
 
         $grid->model()->orderBy('id', 'DESC');
         
-        $grid->column('id', __('ID'))->sortable()->filter();
+        $grid->column('id', __('ID'))->sortable()->filter('like');
+        $grid->column('date', __('Date'))->sortable()->filter('range','date');
         $grid->column('reference', __('Référence'))->sortable()->filter('like');
-        $grid->column('etat', __('Etat'))->sortable()->filter('like');
-        $grid->column('date', __('Date'))->sortable()->filter('like');
         $grid->column('client.nom', __('Client'))->sortable()->filter('like');
-        $grid->column('mode_paiement.type', __('Mode Paiement'))->sortable()->filter('like');
+        $grid->column('mode_paiement.libelle', __('Mode de Paiement'))->sortable()->filter('like');
+        $grid->column('etat.libelle', __('Etat'))->sortable()->filter('like');
         $grid->column('created_at', __('Created at'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('range','date');
+        })->sortable()->filter('range','date')->hide();
         $grid->column('updated_at', __('Updated at'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('range','date');
+        })->sortable()->filter('range','date')->hide();
 
-        $grid->actions(function ($actions) {
-           
+
+        $tables = ["mode_paiement","etat"];
+        foreach($tables as $table)
+        {
+            if(request($table."_libelle"))
+            {
+                $grid->model()->whereHas($table, function ($query) use ($table)  {
+                    $query->where('libelle', 'like', "%".request($table."_libelle")."%");
+                });
+                $url = Route::current()->uri;
+                Admin::script('setSearch("'.$table.'-libelle", "'.request($table."_libelle").'", "/'.$url.'");');
+            }
+        }
+
+        $tablee = "client";
+        if(request($tablee."_nom"))
+        {
+            $grid->model()->whereHas($tablee, function ($query) use ($tablee) {
+                $query->where('nom', 'like', "%".request($tablee."_nom")."%");
+            });
+            $url = Route::current()->uri;
+            Admin::script('setSearch("'.$tablee.'-nom", "'.request($tablee."_nom").'", "/'.$url.'");');
+        }
+
+        
+        $grid->actions (function ($actions) {
+
             $actions->disableView();
+        
+        });
+
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
             
         });
 
@@ -86,11 +131,11 @@ class CommandeController extends AdminController
     {
         $form = new Form(new Commande());
 
-        $form->date('date', __('Date'))->placeholder('Entrez la date')->required()->format('DD/MM/YYYY');
-        $form->text('reference', __('Référence'))->placeholder('Entrez la référence')->required();
+        $form->date('date', __('Date'))->placeholder('Entrez la date')->format('DD/MM/YYYY')->required();
+        $form->text('reference', __('Référence'))->required();
         $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required();
-        $form->select('paiement_id', __('Mode Paiement'))->options(ModePaiement::all()->pluck('type','id'))->required();
-        $form->text('etat', __('Etat'))->placeholder('Entrez l\'état')->required();
+        $form->select('paiement_id', __('Mode Paiement'))->options(ModePaiement::all()->pluck('libelle','id'))->required();
+        $form->select('etat_id', __('Etat'))->options(Etat::all()->pluck('libelle','id'))->required();
        
         $form->divider();
         
@@ -103,9 +148,9 @@ class CommandeController extends AdminController
             $form->select('produits_id','Produit')->options(function ($id) {
                 return Produit::where('id', $id)->pluck('nom', 'id');
             });
-            $form->decimal('prix_unite', __('Prix unité'))->placeholder('Prix unité')->required()->prepend(false);
-            $form->decimal('quantite', __('Quantité'))->placeholder('Quantité')->prepend(false);
-            $form->decimal('prix_total', __('Prix total'))->placeholder('Prix total')->required()->prepend(false);
+            $form->decimal('prix_unite', __('Prix unité'))->placeholder('Prix unité')->required()->prepend(false)->width('80px');
+            $form->decimal('quantite', __('Quantité'))->placeholder('Quantité')->prepend(false)->width('80px');
+            $form->decimal('prix_total', __('Prix total'))->placeholder('Prix total')->required()->prepend(false)->width('80px');
                 
         });
 

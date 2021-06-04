@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Promotion extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     
     public function promotion_associations()
     {

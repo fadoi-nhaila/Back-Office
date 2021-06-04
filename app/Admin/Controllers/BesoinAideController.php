@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use App\Admin\Actions\BatchRestore;
+
 
 class BesoinAideController extends AdminController
 {
@@ -42,6 +44,22 @@ class BesoinAideController extends AdminController
             $actions->disableView();
             
         });
+
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
+            
+        });
+
 
         return $grid;
     }

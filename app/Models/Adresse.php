@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Adresse extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
 
     protected $fillable = ['ville_id','quartier','rue','numero'];
 

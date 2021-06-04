@@ -4,12 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Commande extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'commandes';
+
+    protected $commandes = ['deleted_at'];
 
     
     
@@ -29,6 +34,11 @@ class Commande extends Model
         return $this->hasMany(LigneCommande::class, 'commandes_id');
     }
 
+    public function etat()
+    {
+        return $this->belongsTo(Etat::class,'etat_id');   
+    }
+
     public function getDateAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('d/m/Y');
@@ -40,4 +50,21 @@ class Commande extends Model
     }
 
 
+    public static function commandeReference()
+    {
+        $maxNumber = Self::max('reference');
+        if (!$maxNumber) {
+            $newNumber = 1;
+        } else {
+            $partie = explode(
+                "/",
+                $maxNumber
+            );
+            $partie = explode("/", $maxNumber);
+            $newNumber = explode("C", $partie[0]);
+            $newNumber = intval($newNumber[1]);
+            $newNumber++;
+        }
+        return  "C" . str_pad($newNumber, 5, "0", STR_PAD_LEFT) . "/" . date("y");
+    }
 }

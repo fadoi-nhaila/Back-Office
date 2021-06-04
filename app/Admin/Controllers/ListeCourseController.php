@@ -8,6 +8,11 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+Use Encore\Admin\Admin;
+use App\Admin\Actions\BatchRestore;
+
+
+use Route;
 
 class ListeCourseController extends AdminController
 {
@@ -40,7 +45,32 @@ class ListeCourseController extends AdminController
             return $this->updated_at->format('d/m/Y');
         })->sortable()->filter('like');
 
-        
+        $table = "client";
+        if(request($table."_nom"))
+        {
+            $grid->model()->whereHas($table, function ($query) use ($table) {
+                $query->where('nom', 'like', "%".request($table."_nom")."%");
+            });
+            $url = Route::current()->uri;
+            Admin::script('setSearch("'.$table.'-nom", "'.request($table."_nom").'", "/'.$url.'");');
+        }
+
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
+            
+        });
+
+
 
         return $grid;
     }

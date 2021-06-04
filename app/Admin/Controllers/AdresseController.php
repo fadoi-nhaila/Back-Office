@@ -8,6 +8,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Admin;
+use App\Admin\Actions\BatchRestore;
+
 
 use Route;
 
@@ -41,11 +43,6 @@ class AdresseController extends AdminController
             return $this->updated_at->format('d/m/Y');
         })->filter('range','date');
 
-        $grid->actions(function ($actions) {
-           
-            $actions->disableEdit();
-            
-        });
 
         $grid->disableCreateButton();
 
@@ -61,6 +58,28 @@ class AdresseController extends AdminController
                 Admin::script('setSearch("'.$table.'-nom", "'.request($table."_nom").'", "/'.$url.'");');
             }
         }
+        
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+        $grid->actions (function ($actions) {
+
+            $actions->disableView();
+            $actions->disableEdit();
+
+        
+        });
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
+            
+        });
 
         return $grid;
     }

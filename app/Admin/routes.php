@@ -28,12 +28,16 @@ Route::group([
     $router->resource('parametres', ParametreController::class);
     $router->resource('liste-courses', ListeCourseController::class);
     $router->resource('mode-paiements', ModePaiementController::class);
+    $router->resource('etats', EtatController::class);
+    $router->resource('options', OptionController::class);
+    $router->resource('parametres', ParametreController::class);
 
 Route::group([
         'prefix' => 'api'
     ], function (Router $router) {
         $router->get('produit', 'ApiController@produitParCategorieId');
         $router->get('produit-detail', 'ApiController@produitDetail');
+
     });
 
 });

@@ -10,6 +10,10 @@ use Encore\Admin\Show;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Tree;
 use Encore\Admin\Controllers\ModelForm;
+use App\Admin\Actions\BatchRestore;
+use App\Admin\Actions\Restore;
+
+
 
 class CategorieController extends AdminController
 {
@@ -44,6 +48,25 @@ class CategorieController extends AdminController
         $grid->actions(function ($actions) {
            
             $actions->disableView();
+
+            if (\ request('_ scope_') == 'trashed') {
+                $actions->add(new Restore());
+            }
+            
+        });
+
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
             
         });
 

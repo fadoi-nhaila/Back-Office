@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use App\Admin\Actions\BatchRestore;
+
 
 class MagasinController extends AdminController
 {
@@ -27,6 +29,7 @@ class MagasinController extends AdminController
         $grid = new Grid(new Magasin());
 
         $grid->model()->orderBy('id', 'DESC');
+
         $grid->column('id', 'ID')->sortable()->filter('like');
         $grid->column('nom', __('Nom'))->sortable()->filter('like');
         $grid->column('ville', __('Ville'))->sortable()->filter('like');
@@ -46,6 +49,22 @@ class MagasinController extends AdminController
             $actions->disableView();
             
         });
+
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
+            
+        });
+
         return $grid;
     }
 

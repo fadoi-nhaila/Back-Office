@@ -10,6 +10,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Admin;
+use App\Admin\Actions\BatchRestore;
 
 use Route;
 
@@ -71,6 +72,22 @@ class ProduitController extends AdminController
             $actions->disableView();
             
         });
+
+        $grid->filter(function($filter) {
+
+            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
+            
+        });
+
+
+        $grid->batchActions (function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
+            
+        });
+
 
         return $grid;
     }
