@@ -31,6 +31,7 @@ Route::group([
     $router->resource('etats', EtatController::class);
     $router->resource('options', OptionController::class);
     $router->resource('parametres', ParametreController::class);
+    $router->resource('etat-promos', EtatPromoController::class);
 
 Route::group([
         'prefix' => 'api'

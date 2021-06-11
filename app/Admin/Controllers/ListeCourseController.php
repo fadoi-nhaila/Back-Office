@@ -34,16 +34,16 @@ class ListeCourseController extends AdminController
 
         $grid->model()->orderBy('id', 'DESC');
 
-        $grid->column('id', __('Id'))->sortable()->filter();
+        $grid->column('id', __('ID'))->sortable()->filter();
         $grid->column('libelle', __('Libelle'))->sortable()->filter('like');
         $grid->column('contenu', __('Contenu'))->sortable()->filter('like');
         $grid->column('client.nom', __('Client'))->sortable()->filter('like');
-        $grid->column('created_at', __('Created at'))->display(function(){
+        $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->sortable()->filter('like');
-        $grid->column('updated_at', __('Updated at'))->display(function(){
+        })->sortable()->filter('range','date');
+        $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('like');
+        })->sortable()->filter('range','date');
 
         $table = "client";
         if(request($table."_nom"))

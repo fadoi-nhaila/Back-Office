@@ -8,6 +8,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Admin\Actions\BatchRestore;
+use Illuminate\Support\Str;
 
 
 class OptionController extends AdminController
@@ -97,7 +98,7 @@ class OptionController extends AdminController
         $form->hidden('slug', __('Slug'));
         
         $form->saving(function ($form) {
-            $form->slug = $form->libelle;
+            $form->slug = Str::slug($form->libelle, '-');
         });
 
         return $form;

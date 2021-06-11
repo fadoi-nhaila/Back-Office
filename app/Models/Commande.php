@@ -14,9 +14,6 @@ class Commande extends Model
 
     protected $table = 'commandes';
 
-    protected $commandes = ['deleted_at'];
-
-    
     
     public function client()
     {
@@ -52,19 +49,16 @@ class Commande extends Model
 
     public static function commandeReference()
     {
-        $maxNumber = Self::max('reference');
-        if (!$maxNumber) {
-            $newNumber = 1;
+        $maxRef = Self::max('reference');
+        if (!$maxRef) {
+            $newRef = 1;
         } else {
-            $partie = explode(
-                "/",
-                $maxNumber
-            );
-            $partie = explode("/", $maxNumber);
-            $newNumber = explode("C", $partie[0]);
-            $newNumber = intval($newNumber[1]);
-            $newNumber++;
+           
+            $partie = explode("/", $maxRef);
+            $newRef = explode("C", $partie[0]);
+            $newRef = intval($newRef[1]);
+            $newRef++;
         }
-        return  "C" . str_pad($newNumber, 5, "0", STR_PAD_LEFT) . "/" . date("y");
+        return  "C" . str_pad($newRef, 5, "0", STR_PAD_LEFT) . "/" . date("y");
     }
 }

@@ -2,22 +2,20 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Etat;
+use App\Models\EtatPromo;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use App\Admin\Actions\BatchRestore;
 
-
-class EtatController extends AdminController
+class EtatPromoController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Etats de commandes';
+    protected $title = 'Etats de promotions';
 
     /**
      * Make a grid builder.
@@ -26,12 +24,12 @@ class EtatController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Etat());
+        $grid = new Grid(new EtatPromo());
 
         $grid->model()->orderBy('id', 'DESC');
 
-        $grid->column('id', __('ID'))->sortable()->filter();
-        $grid->column('libelle', __('Libelle'))->sortable()->filter();
+        $grid->column('id', __('ID'))->sortable()->filter('like');
+        $grid->column('libelle', __('Libelle'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('range','date');
@@ -45,20 +43,6 @@ class EtatController extends AdminController
             
         });
 
-        $grid->filter(function($filter) {
-
-            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
-            
-        });
-
-
-        $grid->batchActions (function($batch) {
-
-            if (\request('_scope_') == 'trashed') {
-                $batch->add(new BatchRestore());
-            }
-            
-        });
 
         return $grid;
     }
@@ -71,7 +55,7 @@ class EtatController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Etat::findOrFail($id));
+        $show = new Show(EtatPromo::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('libelle', __('Libelle'));
@@ -88,9 +72,9 @@ class EtatController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Etat());
+        $form = new Form(new EtatPromo());
 
-        $form->text('libelle', __('Libelle'));
+        $form->text('libelle', __('Libelle'))->placeholder('Entrez le libelle')->required();
 
         return $form;
     }

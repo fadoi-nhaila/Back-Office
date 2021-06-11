@@ -14,7 +14,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 Use Encore\Admin\Admin;
 use App\Admin\Actions\BatchRestore;
-
+use Carbon\Carbon;
 
 use Route;
 
@@ -45,13 +45,12 @@ class CommandeController extends AdminController
         $grid->column('client.nom', __('Client'))->sortable()->filter('like');
         $grid->column('mode_paiement.libelle', __('Mode de Paiement'))->sortable()->filter('like');
         $grid->column('etat.libelle', __('Etat'))->sortable()->filter('like');
-        $grid->column('created_at', __('Created at'))->display(function(){
+        $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('range','date')->hide();
-        $grid->column('updated_at', __('Updated at'))->display(function(){
-            return $this->created_at->format('d/m/Y');
+        $grid->column('updated_at', __('Modifé à'))->display(function(){
+            return $this->updated_at->format('d/m/Y');
         })->sortable()->filter('range','date')->hide();
-
 
         $tables = ["mode_paiement","etat"];
         foreach($tables as $table)
@@ -130,12 +129,12 @@ class CommandeController extends AdminController
     protected function form()
     {
         $form = new Form(new Commande());
-
-        $form->date('date', __('Date'))->placeholder('Entrez la date')->format('DD/MM/YYYY')->required();
-        $form->text('reference', __('Référence'))->required();
-        $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required();
-        $form->select('paiement_id', __('Mode Paiement'))->options(ModePaiement::all()->pluck('libelle','id'))->required();
-        $form->select('etat_id', __('Etat'))->options(Etat::all()->pluck('libelle','id'))->required();
+        
+        $form->text('reference', __('Référence'))->required()->default(Commande::commandeReference())->width('110px');
+        $form->date('date', __('Date'))->placeholder('mm/dd/yyyy')->format('DD/MM/YYYY')->required();
+        $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required()->setWidth(5, 2);
+        $form->select('paiement_id', __('Mode Paiement'))->options(ModePaiement::all()->pluck('libelle','id'))->required()->setWidth(5, 2);
+        $form->select('etat_id', __('Etat'))->options(Etat::all()->pluck('libelle','id'))->required()->setWidth(5, 2);
        
         $form->divider();
         
@@ -160,7 +159,7 @@ class CommandeController extends AdminController
         });
 
         Admin::script('$(function(){initCommande()})');
-          
+  
         return $form;
 
     }

@@ -8,8 +8,6 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Admin;
-use App\Admin\Actions\BatchRestore;
-
 
 use Route;
 
@@ -38,10 +36,10 @@ class AdresseController extends AdminController
         $grid->column('numero', __('Numéro'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
-        })->filter('range','date');
+        })->filter('range','date')->sortable();
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->filter('range','date');
+        })->filter('range','date')->sortable();
 
 
         $grid->disableCreateButton();
@@ -59,27 +57,16 @@ class AdresseController extends AdminController
             }
         }
         
-        $grid->filter(function($filter) {
-
-            $filter->scope('trashed', 'Corbeille')->onlyTrashed();
-            
-        });
+        
 
         $grid->actions (function ($actions) {
 
             $actions->disableView();
             $actions->disableEdit();
+            //$actions->disableDelete();
 
-        
         });
 
-        $grid->batchActions (function($batch) {
-
-            if (\request('_scope_') == 'trashed') {
-                $batch->add(new BatchRestore());
-            }
-            
-        });
 
         return $grid;
     }

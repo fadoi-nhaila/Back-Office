@@ -5,6 +5,9 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produit;
+use App\Models\PromotionAssociation;
+use App\Models\Promotion;
+
 
 class ApiController extends Controller
 {

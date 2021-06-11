@@ -34,14 +34,7 @@ class ClientController extends AdminController
         $grid->model()->orderBy('id', 'DESC');
 
         $grid->column('id', 'ID')->sortable()->filter('like');
-        $grid->column('nom', __('Nom'))->sortable()->filter('like')->expand(function ($model) {
-
-            $adresses = $model->adresses()->take(5)->get()->map(function ($adresse) {
-                return $adresse->only(['id','ville', 'quartier','rue','numero']);
-            });
-        
-            return new Table(['ID', 'Ville', 'Quartier','Rue','Numéro'], $adresses->toArray());
-        });;
+        $grid->column('nom', __('Nom'))->sortable()->filter('like');
         $grid->column('prenom', __('Prénom'))->sortable()->filter('like');
         $grid->column('sexe', __('Sexe'))->sortable()->filter('like');
         $grid->column('telephone', __('Téléphone'))->sortable()->filter('like');
@@ -125,9 +118,9 @@ class ClientController extends AdminController
 
         $form->table('adresses', function (Form\NestedForm $form) {
             $form->select('ville_id', __('Ville'))->options(Ville::all()->pluck('nom','id'))->required();
-            $form->text('quartier', __('Quartier'))->placeholder('Quartier')->required()->prepend(false);
-            $form->text('rue', __('Rue'))->placeholder('Rue')->required()->prepend(false);
-            $form->decimal('numero', __('Numéro'))->placeholder('Numéro')->required()->prepend(false);
+            $form->text('quartier', __('Quartier'))->placeholder('Quartier')->required()->prepend(false)->width('100px');
+            $form->text('rue', __('Rue'))->placeholder('Rue')->required()->prepend(false)->width('80px');
+            $form->decimal('numero', __('Numéro'))->placeholder('Numéro')->required()->prepend(false)->width('80px');
         });
 
         $form->saving(function (Form $form) {

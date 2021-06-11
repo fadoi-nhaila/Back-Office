@@ -19,6 +19,11 @@ class Promotion extends Model
         return $this->hasMany(PromotionAssociation::class, 'promotions_id');
     }
 
+    public function etat_promo()
+    {
+        return $this->belongsTo(EtatPromo::class,'etat_id');   
+    }
+
     public function getDateDebutAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('d/m/Y');

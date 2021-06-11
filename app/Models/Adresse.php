@@ -11,6 +11,8 @@ class Adresse extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    
+    protected $table = 'adresses';
 
 
     protected $fillable = ['ville_id','quartier','rue','numero'];
