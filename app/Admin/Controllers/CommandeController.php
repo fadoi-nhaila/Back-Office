@@ -14,9 +14,12 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 Use Encore\Admin\Admin;
 use App\Admin\Actions\BatchRestore;
+use App\Admin\Chiffres;
 use Carbon\Carbon;
+use App\Admin\Actions\Imprimer;
 
 use Route;
+use PDF;
 
 class CommandeController extends AdminController
 {
@@ -79,6 +82,7 @@ class CommandeController extends AdminController
         $grid->actions (function ($actions) {
 
             $actions->disableView();
+            $actions->add(new Imprimer);
         
         });
 
@@ -162,6 +166,17 @@ class CommandeController extends AdminController
   
         return $form;
 
+    }
+
+    public function print($id)
+    {
+        $commande = Commande::find($id);
+        //$chiffres = new Chiffres(round($commande->total_ttc,2),'MAD');
+        //$chiffre = $chiffres->convert("fr-FR");
+
+        $pdf = PDF::loadView("facture.imprimer", compact('commande'))->setOptions(['isPhpEnabled' => true, 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+        return $pdf->stream();
+        //return $pdf->download($invoice->reference.'.pdf');
     }
 
  

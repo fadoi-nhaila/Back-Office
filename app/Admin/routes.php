@@ -32,6 +32,7 @@ Route::group([
     $router->resource('options', OptionController::class);
     $router->resource('parametres', ParametreController::class);
     $router->resource('etat-promos', EtatPromoController::class);
+    $router->get('commandes/{id}/print', 'CommandeController@print');
 
 Route::group([
         'prefix' => 'api'

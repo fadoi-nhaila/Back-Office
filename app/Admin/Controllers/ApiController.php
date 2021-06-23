@@ -8,7 +8,6 @@ use App\Models\Produit;
 use App\Models\PromotionAssociation;
 use App\Models\Promotion;
 
-
 class ApiController extends Controller
 {
     
@@ -31,10 +30,26 @@ class ApiController extends Controller
     {
         $produit_id= $request->get('id');
         $produit = Produit::where('id', $produit_id)->get(['nom','prix'])->first();
+        
+        
+        
+        
+        
+        
+        
+        // $promotion_association_produit = PromotionAssociation::where('id', $produit_id)->first();
+        // $produitcat = Produit::where('id', $promotion_association_produit)->get(['nom','prix'])->first();
+        // $produit = Promotion::where('id', $promotion_association_produit)->get(['valeur'])->first();
+
 
         //calcule de promotion
-
+        
         return $produit;
     }
 
+
+
+    
 }
+
+

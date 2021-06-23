@@ -19,6 +19,10 @@ class Categorie extends Model
     {
         return $this->hasMany(Produit::class,'categorie_id');
     }
-
+    
+    public function promotions()
+    {
+        return $this->hasManyThrough('App\Models\Promotion', 'App\Models\PromotionAssociation', 'categories_id','id','id','promotions_id');
+    }
     
 }

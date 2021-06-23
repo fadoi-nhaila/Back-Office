@@ -14,5 +14,10 @@ class PromotionAssociation extends Model
 
     protected $fillable = ['categories_id','produits_id'];
 
+    public function promotion()
+    {
+        return $this->belongsTo(Promotion::class, 'promotions_id');
+    }
+
 
 }

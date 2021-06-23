@@ -9,6 +9,7 @@ function initCommande()
 
     $(".has-many-ligne_commandes").append($("<tfoot><tr><td colspan='4' class='title' align ='right'>Total : </td><td class='somme_total' align ='right'></td><td></td></tr></tfoot>"));
 
+
     sommeTotalCommande();
     
     $(document).on('select2:select', '.has-many-ligne_commandes select.produits_id', function (event) {

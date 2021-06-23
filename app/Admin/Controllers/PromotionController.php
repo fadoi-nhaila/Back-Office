@@ -45,11 +45,6 @@ class PromotionController extends AdminController
         $grid->column('type', __('Type'))->sortable()->filter('like');
         $grid->column('valeur', __('Valeur'))->sortable()->filter('like');
         $grid->column('etat_promo.libelle', __('Etat'))->sortable()->filter('like');
-        $states = [
-            'on' => ['value' => 1, 'text' => 'Oui', 'color' => 'primary'],
-            'off' => ['value' => 2, 'text' => 'Non', 'color' => 'default'],
-        ];
-        $grid->column('cumulable', __('Cumulable'))->switch($states);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('range','date');
@@ -126,9 +121,9 @@ class PromotionController extends AdminController
     protected function form()
     {
         $form = new Form(new Promotion());
-        $form->text('nom', __('Nom'))->placeholder('Entrez le nom')->required();
+        $form->text('nom', __('Nom'))->placeholder('Entrez le nom')->required()->setWidth(6, 2);
        
-        $form->select('etat_id', __('Etat'))->options(EtatPromo::all()->pluck('libelle','id'))->required(); 
+        $form->select('etat_id', __('Etat'))->options(EtatPromo::all()->pluck('libelle','id'))->required()->setWidth(6, 2); 
 
        
         $types = [
@@ -136,17 +131,11 @@ class PromotionController extends AdminController
             'solde' =>'solde' ,
         ];
         
-        $form->select('type', __('Type'))->options($types)->required();
-        $form->text('valeur', __('Valeur'))->placeholder('Entrez la valeur')->required();
-        $form->date('date_debut', __('Date début'))->placeholder('Date début')->required()->format('DD/MM/YYYY');
-        $form->date('date_fin', __('Date fin'))->placeholder('Date fin')->required()->format('DD/MM/YYYY');
-        $states = [
-            'on'  => ['value' => 1, 'text' => 'Oui', 'color' => 'primary'],
-            'off' => ['value' => 0, 'text' => 'Non', 'color' => 'default'],
-        ];
+        $form->select('type', __('Type'))->options($types)->required()->setWidth(6, 2);
+        $form->decimal('valeur', __('Valeur'))->placeholder('Entrez la valeur')->required()->width('110px');
+        $form->date('date_debut', __('Date début'))->placeholder('mm/dd/yyyy')->required()->format('DD/MM/YYYY');
+        $form->date('date_fin', __('Date fin'))->placeholder('mm/dd/yyyy')->required()->format('DD/MM/YYYY');
         
-        $form->switch('cumulable', __('Cumulable'))->states($states);
-
         $form->divider();
 
         $form->table('promotion_associations','', function (Form\NestedForm $form) {

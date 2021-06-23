@@ -23,5 +23,10 @@ class Produit extends Model
         return $this->belongsTo(Marque::class,'marque_id');
 
     }
+
+    public function promotions()
+    {
+        return $this->hasManyThrough('App\Models\Promotion', 'App\Models\PromotionAssociation', 'produits_id','id','id','promotions_id');
+    }
   
 }

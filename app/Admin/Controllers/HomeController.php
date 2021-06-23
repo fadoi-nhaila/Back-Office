@@ -7,12 +7,27 @@ use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
+use Encore\Admin\Widgets\InfoBox;
+
 
 class HomeController extends Controller
 {
     public function index(Content $content)
-    {
-        return $content
+    {   
+        $content->title('Dashboard');
+        $content->description('Description...');
+
+        $content->row(function ($row) {
+            $row->column(3, new InfoBox('Utilisateurs', 'users', 'aqua', '/admin/auth/users', '1'));
+            $row->column(3, new InfoBox('Commandes', 'shopping-cart', 'green', '/admin/commandes', '3'));
+            $row->column(3, new InfoBox('Produits', 'product-hunt', 'yellow', '/admin/produits', '4'));
+            $row->column(3, new InfoBox('Clients', 'user-plus', 'red', '/admin/clients', '2'));
+
+        });
+        
+        return $content;
+
+        /*return $content
             ->title('Dashboard')
             ->description('Description...')
             ->row(Dashboard::title())
@@ -29,6 +44,6 @@ class HomeController extends Controller
                 $row->column(4, function (Column $column) {
                     $column->append(Dashboard::dependencies());
                 });
-            });
+            });*/
     }
 }

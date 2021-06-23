@@ -10,6 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 Use Encore\Admin\Widgets\Table;
 use App\Admin\Actions\BatchRestore;
+use Illuminate\Support\Str;
 
 
 
@@ -34,8 +35,8 @@ class ClientController extends AdminController
         $grid->model()->orderBy('id', 'DESC');
 
         $grid->column('id', 'ID')->sortable()->filter('like');
-        $grid->column('nom', __('Nom'))->sortable()->filter('like');
-        $grid->column('prenom', __('Prénom'))->sortable()->filter('like');
+        $grid->column('nom', __('Nom'))->sortable()->filter('like')->ucfirst();
+        $grid->column('prenom', __('Prénom'))->sortable()->filter('like')->ucfirst();
         $grid->column('sexe', __('Sexe'))->sortable()->filter('like');
         $grid->column('telephone', __('Téléphone'))->sortable()->filter('like');
         $grid->column('email', __('Email'))->sortable()->filter('like');
@@ -68,6 +69,8 @@ class ClientController extends AdminController
             }
             
         });
+
+        
 
 
         return $grid;

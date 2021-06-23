@@ -41,11 +41,11 @@ class ProduitController extends AdminController
         $grid->column('nom', __('Nom'))->sortable()->filter('like');
         $grid->column('description', __('Description'))->hide();
         $grid->column('prix', __('Prix'))->sortable()->filter('like')->display(function($prix){
-            return number_format($prix, 2, ',', '');
+            return number_format($prix, 2, '.', '');
         });
         $grid->column('point_fidelite', __('Point fidélité'))->sortable()->filter('like');
         $grid->column('quantite', __('Quantité'))->sortable()->filter('like');
-        $grid->column('image', __('Image'))->gallery(['width' => 50, 'height' => 50,'zooming' => true]);
+        $grid->column('image', __('Image'))->gallery(['width' => 60, 'height' => 60,'zooming' => true]);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('like');
@@ -72,6 +72,7 @@ class ProduitController extends AdminController
             $actions->disableView();
             
         });
+
 
         $grid->filter(function($filter) {
 
@@ -129,7 +130,7 @@ class ProduitController extends AdminController
         $form->select('categorie_id', __('Catégorie'))->options(Categorie::all()->pluck('libelle','id'))->required();
         $form->select('marque_id', __('Marque'))->options(Marque::all()->pluck('libelle','id'))->required();
         $form->text('nom', __('Nom'))->placeholder('Entrez le nom')->required();
-        $form->currency('prix', __('Prix'))->placeholder('Entrez le prix')->required()->prepend(false);
+        $form->decimal('prix', __('Prix'))->placeholder('Entrez le prix')->required();
         $form->decimal('point_fidelite', __('Point fidélité'))->placeholder('Entrez les points')->required();
         $form->number('quantite', __('Quantité'))->placeholder('Entrez la qantité')->required();
         $form->image('image', __('Image'))->required();
