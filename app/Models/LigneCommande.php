@@ -14,4 +14,14 @@ class LigneCommande extends Model
 
     protected $fillable = ['categories_id','produits_id','prix_unite','quantite','prix_total'];
 
+    public function categorie()
+    {
+        return $this->belongsTo(Categorie::class,'categories_id');   
+    }
+
+    public function produit()
+    {
+        return $this->belongsTo(Produit::class,'produits_id');   
+    }
+
 }

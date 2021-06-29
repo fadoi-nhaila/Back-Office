@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imprimer extends RowAction
 {
-    public $name = 'imprimer';
+    public $name = 'Imprimer';
 
 
     public function href()

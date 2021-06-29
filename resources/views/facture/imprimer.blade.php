@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Facture | {{ $invoice->reference }}</title>
+	<title>Facture | {{ $commande->reference }}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<style type="text/css">
 
@@ -51,7 +51,7 @@
         }
 
         .gris{
-        	background-color: #ddd;
+        	background-color:cadetblue;
         }
 
         .center{
@@ -96,21 +96,21 @@
 				<!--<img width="160" src="http://facturation.test/a52b0e4905e97939131ff02388326686.png" />-->
 	        </td>
 	        <td style="text-align: right; vertical-align: top; width: 50%;" >
-	            <table style="width: 100%;" align="" cellpadding="0" cellspacing="0">
+	            <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	                <tr>
-	                    <td colspan="3" class="center border">FACTURE en {{ $invoice->devise }} N° {{ $invoice->reference }}</td>
+	                    <td colspan="3" class="center border">FACTURE en MAD N° {{ $commande->reference }}</td>
 	                </tr>
 	                <tr>
 	                    <td class="space" colspan="3"></td>
 	                </tr>
 	                <tr>
 	                    <th class="gris center border padding">Date</th>
-	                    <th class=" gris center border padding">Réf Client</th>
+	                    <th class=" gris center border padding">Code Client</th>
 	                    <th class="gris center border padding">Page</th>
 	                </tr>
 	                <tr>
-	                    <td class="center border">{{ date("d/m/Y",  strtotime($invoice->date)) }}</td>
-	                    <td class="center border">{{ $invoice->client->reference }}</td>
+	                    <td class="center border">{{ date("d/m/Y",  strtotime($commande->date)) }}</td>
+	                    <td class="center border">{{ $commande->client->code_barre }}</td>
 	                    <td class="center border"></td>
 	                </tr>
 	            </table>
@@ -130,7 +130,7 @@
 						Tél : 0535525252 <br>
 						Email : bennounahicham@gmail.com<br><br>
 		   			</td>
-				   </tr>
+				</tr>
 
 		   		<tr><td style="width: 60px;">RC</td><td>: 46891</td></tr>
 		        <tr><td style="width: 60px;">IF</td><td>: 15261147</td></tr>
@@ -150,37 +150,37 @@
 	$nbr = 9;
 	$min = 0;
 	$max = $nbr;
-	while($min < count($invoice->lines)):
+	while($min < count($commande->ligne_commandes)):
 ?>
 <table style="width: 100%; margin-top: 80px;">
   	<tr>
   		<td colspan="2">
       		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="lignes">
           		<tr>
-          			<th class="gris padding border center">Référence</th>
-          			<th class="gris padding border center">Désignation</th>
+          			<th class="gris padding border center">Catégorie</th>
+          			<th class="gris padding border center">Produit</th>
+					<th class="gris padding border center">Prix produit</th>
           			<th class="gris padding border center">Quantité</th>
-          			<th class="gris padding border center">Prix HT</th>
-          			<th class="gris padding border center">Total HT</th>
+          			<th class="gris padding border center">Prix total</th>
           		</tr>
           		<tr>
           			<td colspan="5" class="space"></td>
           		</tr>
-          		@foreach($invoice->lines as $k => $line)
+          		@foreach($commande->ligne_commandes as $k => $ligne)
 				@if($k >= $min && $k < $max)
   				<tr>
-	              	<td class="padding border" style="text-align: left;">{{ $line->reference }} {{ $k }}</td>
-	              	<td class="padding border"  style="text-align: left;">{!! nl2br($line->description) !!}</td>
-	              	<td class="padding border"  style="text-align: right;">{{ $line->qty }}</td>
-	              	<td class="padding border"  style="text-align: right;">{{ number_format($line->price_uht,2,"."," ") }}</td>
-	              	<td class="padding border"  style="text-align: right;">{{ number_format(($line->price_uht * $line->qty),2,"."," ") }}</td>
+	              	<td class="padding border" style="text-align: left;">{{ $ligne->categorie->libelle }}</td>
+	              	<td class="padding border"  style="text-align: left;">{{ $ligne->produit->nom }}</td>
+	              	<td class="padding border"  style="text-align: right;">{{ number_format($ligne->prix_unite,2,"."," ") }}</td>
+					<td class="padding border"  style="text-align: right;">{{ $ligne->quantite }}</td>  
+	              	<td class="padding border"  style="text-align: right;">{{ number_format(($ligne->prix_unite * $ligne->quantite),2,"."," ") }}</td>
 	            </tr>
 				@endif
 	            @endforeach
       		</table>
 
       		<!--<table cellpadding="0" cellspacing="0" align="right" style="margin-top: 100px;">
-        		<tr><td><img width="150" src="http://facturation.test/56ac6e4c7524d2b2f4f52805ca24ec56.jpg" /></td><td width="30"></td></tr>
+        		<tr><td><img width="150" src="http://promos.test/1b6a5436577bae07b5c8ecd0109cde82.jpg" /></td><td width="30"></td></tr>
       		</table>--> 
 
       	</td>
@@ -197,15 +197,11 @@
 	<table align="right" class="infos_foot">
 	    <tr>
     		<th class="gris center border padding">Mode de règlement</th>
-    		<th class="gris center border padding">Total TVA</th>
-    		<th class="gris center border padding">Total HT</th>
-    		<th class="gris center border padding">Total TTC</th>
+    		<th class="gris center border padding">Total</th>
     	</tr>
     	<tr>
-    		<td class="center border padding">{{ $invoice->paiementmode->name }}</td>
-    		<td class="center border padding">{{ number_format(($invoice->total_ttc - $invoice->total_ht),2,"."," ") }}</td>
-    		<td class="center border padding">{{ number_format($invoice->total_ht,2,"."," ") }}</td>
-    		<td class="center border padding">{{ number_format($invoice->total_ttc,2,"."," ") }}</td>
+    		<td class="center border padding">{{ $commande->mode_paiement->libelle }}</td>
+    		<td class="center border padding">{{ number_format($commande->total,2,"."," ") }}</td>
     	</tr>
     	<tr>
 	  		<td colspan="4" style="text-align: right; padding-right: 10px;">Arrêté la présente facture &agrave; la somme de {{ $chiffre }}</td>

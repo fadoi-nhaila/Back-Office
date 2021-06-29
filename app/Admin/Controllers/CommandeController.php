@@ -19,7 +19,8 @@ use Carbon\Carbon;
 use App\Admin\Actions\Imprimer;
 
 use Route;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
+use App;
 
 class CommandeController extends AdminController
 {
@@ -48,6 +49,7 @@ class CommandeController extends AdminController
         $grid->column('client.nom', __('Client'))->sortable()->filter('like');
         $grid->column('mode_paiement.libelle', __('Mode de Paiement'))->sortable()->filter('like');
         $grid->column('etat.libelle', __('Etat'))->sortable()->filter('like');
+        $grid->column('total', __('Total'))->setAttributes(['style' => 'font-weight:bold; font-size:15px;']);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('range','date')->hide();
@@ -139,6 +141,8 @@ class CommandeController extends AdminController
         $form->select('client_id', __('Client'))->options(Client::all()->pluck('nom','id'))->required()->setWidth(5, 2);
         $form->select('paiement_id', __('Mode Paiement'))->options(ModePaiement::all()->pluck('libelle','id'))->required()->setWidth(5, 2);
         $form->select('etat_id', __('Etat'))->options(Etat::all()->pluck('libelle','id'))->required()->setWidth(5, 2);
+        $form->decimal('total', __('Total'))->placeholder('0.00')->required()->setWidth(5, 2);
+
        
         $form->divider();
         
@@ -158,8 +162,8 @@ class CommandeController extends AdminController
         });
 
         $form->saving(function (Form $form) {
-            foreach($form->model()->ligne_commandes as $achat)
-                $achat->delete();
+            foreach($form->model()->ligne_commandes as $ligne)
+                $ligne->delete();
         });
 
         Admin::script('$(function(){initCommande()})');
@@ -171,12 +175,12 @@ class CommandeController extends AdminController
     public function print($id)
     {
         $commande = Commande::find($id);
-        //$chiffres = new Chiffres(round($commande->total_ttc,2),'MAD');
-        //$chiffre = $chiffres->convert("fr-FR");
-
-        $pdf = PDF::loadView("facture.imprimer", compact('commande'))->setOptions(['isPhpEnabled' => true, 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+        $chiffres = new Chiffres(round($commande->total,2),'MAD');
+        $chiffre = $chiffres->convert("fr-FR");
+        
+        $pdf = PDF::loadView("facture.imprimer", compact('commande','chiffre'))->setOptions(['isPhpEnabled' => true, 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,'defaultFont' => 'sans-serif']);
         return $pdf->stream();
-        //return $pdf->download($invoice->reference.'.pdf');
+        //return $pdf->download($commande->reference.'.pdf');
     }
 
  
