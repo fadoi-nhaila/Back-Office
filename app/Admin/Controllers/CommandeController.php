@@ -188,6 +188,7 @@ class CommandeController extends AdminController
     }
 
     public function print($id)
+    {
         $commande = Commande::find($id);
         $chiffres = new Chiffres(round($commande->total,2),'MAD');
         $chiffre = $chiffres->convert("fr-FR");
