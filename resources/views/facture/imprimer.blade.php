@@ -51,7 +51,7 @@
         }
 
         .gris{
-        	background-color:cadetblue;
+        	background-color:wheat;
         }
 
         .center{
@@ -201,7 +201,7 @@
     	</tr>
     	<tr>
     		<td class="center border padding">{{ $commande->mode_paiement->libelle }}</td>
-    		<td class="center border padding">{{ number_format($commande->total,2,"."," ") }}</td>
+    		{{-- <td class="center border padding">{{ number_format($commande->total,2,"."," ") }}</td> --}}
     	</tr>
     	<tr>
 	  		<td colspan="4" style="text-align: right; padding-right: 10px;">Arrêté la présente facture &agrave; la somme de {{ $chiffre }}</td>

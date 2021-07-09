@@ -134,4 +134,14 @@ class ClientController extends AdminController
 
         return $form;
     }
+
+    public static function boot() {
+        parent::boot();
+        static::deleting(function($client) {
+            $ids = $post->comments()->pluck('id'); 
+
+            $client->adresses()->delete();
+
+        });
+    }
 }

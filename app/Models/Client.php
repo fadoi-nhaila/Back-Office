@@ -37,5 +37,15 @@ class Client extends Model
         return $this->hasMany(Parametre::class,'client_id');
     }
 
+    public static function boot() {
+        parent::boot();
+        
+        static::deleting(function($client) {
+
+            $client->adresses()->delete();
+
+        });
+    }
+
 }
 

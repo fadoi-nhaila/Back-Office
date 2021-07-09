@@ -9,6 +9,11 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\InfoBox;
 use App\Models\Client;
+use App\Models\Promotion;
+use App\Models\Commande;
+use App\Models\Produit;
+
+
 
 
 class HomeController extends Controller
@@ -22,32 +27,42 @@ class HomeController extends Controller
         $content->description('Description...');
 
         $content->row(function ($row) {
-            $row->column(3, new InfoBox('Utilisateurs', 'users', 'aqua', '/admin/auth/users', '1'));
-            $row->column(3, new InfoBox('Commandes', 'shopping-cart', 'green', '/admin/commandes', '3'));
-            $row->column(3, new InfoBox('Produits', 'product-hunt', 'yellow', '/admin/produits', '3'));
-            $row->column(3, new InfoBox('Clients', 'user-plus', 'red', '/admin/clients','2'));
+            $row->column(3, new InfoBox('Clients', 'user-plus', 'red', '/admin/clients',$this->getClients()));
+            $row->column(3, new InfoBox('Promotions', 'percent', 'aqua', '/admin/auth/promotions',$this->getPromotions()));
+            $row->column(3, new InfoBox('Commandes', 'shopping-cart', 'green', '/admin/commandes',$this->getCommandes()));
+            $row->column(3, new InfoBox('Produits', 'product-hunt', 'yellow', '/admin/produits', $this->getProduits()));
 
         });
         
         return $content;
 
-        /*return $content
-            ->title('Dashboard')
-            ->description('Description...')
-            ->row(Dashboard::title())
-            ->row(function (Row $row) {
+       
+    }
 
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::environment());
-                });
+    public function getPromotions(){
 
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::extensions());
-                });
+        $promotion_count = Promotion::all()->count();
 
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::dependencies());
-                });
-            });*/
+        return $promotion_count;
+    }
+    public function getClients(){
+
+        $client_count = Client::all()->count();
+
+        return $client_count;
+    }
+
+    public function getCommandes(){
+
+        $commande_count = Commande::all()->count();
+
+        return $commande_count;
+    }
+
+    public function getProduits(){
+
+        $produit_count = Produit::all()->count();
+
+        return $produit_count;
     }
 }

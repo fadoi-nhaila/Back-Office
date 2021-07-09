@@ -10,9 +10,9 @@ class Imprimer extends RowAction
     public $name = 'Imprimer';
 
 
-    public function href()
+    public function render()
     {
-        return "{$this->getResource()}/{$this->getKey()}/print";
+        return '<a target="_blank" href="'.$this->getResource().'/'.$this->getKey().'/print"><i class="fa fa-paper-plane"></i></a>';
     }
 
 }

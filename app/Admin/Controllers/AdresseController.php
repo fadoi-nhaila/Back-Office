@@ -34,6 +34,7 @@ class AdresseController extends AdminController
         $grid->column('quartier', __('Quartier'))->sortable()->filter('like');
         $grid->column('rue', __('Rue'))->sortable()->filter('like');
         $grid->column('numero', __('Numéro'))->sortable()->filter('like');
+        $grid->column('client.nom', __('Client'))->sortable()->filter('like');
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->filter('range','date')->sortable();
@@ -44,7 +45,7 @@ class AdresseController extends AdminController
 
         $grid->disableCreateButton();
 
-        $tables = ["ville"];
+        $tables = ["ville","client"];
         foreach($tables as $table)
         {
             if(request($table."_nom"))
@@ -57,15 +58,9 @@ class AdresseController extends AdminController
             }
         }
         
-        
 
-        $grid->actions (function ($actions) {
+        $grid->disableActions();
 
-            $actions->disableView();
-            $actions->disableEdit();
-            //$actions->disableDelete();
-
-        });
 
 
         return $grid;
