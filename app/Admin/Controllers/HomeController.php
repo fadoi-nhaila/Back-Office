@@ -28,7 +28,7 @@ class HomeController extends Controller
 
         $content->row(function ($row) {
             $row->column(3, new InfoBox('Clients', 'user-plus', 'red', '/admin/clients',$this->getClients()));
-            $row->column(3, new InfoBox('Promotions', 'percent', 'aqua', '/admin/auth/promotions',$this->getPromotions()));
+            $row->column(3, new InfoBox('Promotions', 'percent', 'aqua', '/admin/promotions',$this->getPromotions()));
             $row->column(3, new InfoBox('Commandes', 'shopping-cart', 'green', '/admin/commandes',$this->getCommandes()));
             $row->column(3, new InfoBox('Produits', 'product-hunt', 'yellow', '/admin/produits', $this->getProduits()));
 

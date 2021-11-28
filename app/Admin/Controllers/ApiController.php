@@ -47,18 +47,7 @@ class ApiController extends Controller
                 ->orderBy("promotions.date_debut", "desc")
                 ->first();
         
-        // if(!empty ($promotion) &&  $promotion->type == "solde")
-        //       {
-        //       $produit->prix -= $promotion->valeur;
-        //     }
-        // else{
-            
-        //     $produit->prix -= $produit->prix*$promotion->valeur/100;
-        // }
-       
-		    
-		// }
-        //  dd(!is_null($promotion));
+        
         if (!is_null($promotion)){
             switch ($promotion->type) {
                 case "solde":

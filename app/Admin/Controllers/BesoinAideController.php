@@ -37,7 +37,7 @@ class BesoinAideController extends AdminController
         })->sortable()->filter('range','date');
         $grid->column('updated_at', __('Modifé à'))->display(function(){
             return $this->updated_at->format('d/m/Y');
-        })->sortable()->filter('range','date');
+        })->sortable()->filter('range','date')->hide();
 
         $grid->actions(function ($actions) {
            

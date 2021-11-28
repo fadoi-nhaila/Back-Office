@@ -37,7 +37,7 @@ class CategorieController extends AdminController
         
         $grid->column('id', __('ID'))->sortable()->filter('like');
         $grid->column('libelle', __('Libellé'))->sortable()->filter('like');
-        $grid->column('image', __('Image'))->gallery(['width' => 60, 'height' => 60,'zooming' => true]);
+        $grid->column('image', __('Image'))->gallery(['width' => 50, 'height' => 50,'zooming' => true]);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('range','date');

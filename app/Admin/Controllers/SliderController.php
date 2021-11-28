@@ -33,7 +33,7 @@ class SliderController extends AdminController
         $grid->column('id', 'ID')->sortable()->filter('like');
         $grid->column('nom', __('Nom'))->sortable()->filter('like');
         $grid->column('url', __('Url'))->sortable()->filter('like');
-        $grid->column('image', __('Image'))->image('http://promos.test//uploads',50,50)->sortable()->filter();
+        $grid->column('image', __('Image'))->gallery(['width' => 50, 'height' => 80,'zooming' => true]);
         $grid->column('created_at', __('Créé à'))->display(function(){
             return $this->created_at->format('d/m/Y');
         })->sortable()->filter('range','date');

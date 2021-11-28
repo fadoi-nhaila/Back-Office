@@ -16,6 +16,7 @@ class AddTotalToCommandesTable extends Migration
         Schema::table('commandes', function (Blueprint $table) {
             //
             $table->decimal('total',15,2)->after('etat_id');
+
         });
     }
 

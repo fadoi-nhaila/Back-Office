@@ -51,7 +51,7 @@
         }
 
         .gris{
-        	background-color:wheat;
+        	background-color:darkcyan;
         }
 
         .center{
@@ -170,7 +170,7 @@
 				@if($k >= $min && $k < $max)
   				<tr>
 	              	<td class="padding border" style="text-align: left;">{{ $ligne->categorie->libelle }}</td>
-	              	<td class="padding border"  style="text-align: left;">{{ $ligne->produit->nom }}</td>
+	              	<td class="padding border"  style="text-align: left;">{{ $ligne->produits->nom }}</td>
 	              	<td class="padding border"  style="text-align: right;">{{ number_format($ligne->prix_unite,2,"."," ") }}</td>
 					<td class="padding border"  style="text-align: right;">{{ $ligne->quantite }}</td>  
 	              	<td class="padding border"  style="text-align: right;">{{ number_format(($ligne->prix_unite * $ligne->quantite),2,"."," ") }}</td>
@@ -201,7 +201,7 @@
     	</tr>
     	<tr>
     		<td class="center border padding">{{ $commande->mode_paiement->libelle }}</td>
-    		{{-- <td class="center border padding">{{ number_format($commande->total,2,"."," ") }}</td> --}}
+    		<td class="center border padding">{{ number_format($commande->total,2,"."," ") }}</td>
     	</tr>
     	<tr>
 	  		<td colspan="4" style="text-align: right; padding-right: 10px;">Arrêté la présente facture &agrave; la somme de {{ $chiffre }}</td>
